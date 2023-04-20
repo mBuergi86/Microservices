@@ -1,0 +1,52 @@
+[
+ {
+  "id": 1,
+  "name": "Jonas",
+  "vorname": "Albig"
+ },
+ {
+  "id": 2,
+  "name": "Thomas",
+  "vorname": "Schmidt"
+ },
+ {
+  "id": 3,
+  "name": "Emanuel",
+  "vorname": "Lubert"
+ },
+ {
+  "id": 4,
+  "name": "Patrick",
+  "vorname": "Mock"
+ },
+ {
+  "id": 5,
+  "name": "Natasha",
+  "vorname": "Ruf"
+ },
+ {
+  "id": 6,
+  "name": "Jeanette",
+  "vorname": "Mürner"
+ },
+ {
+  "id": 7,
+  "name": "Claudia",
+  "vorname": "Korner"
+ },
+ {
+  "id": 8,
+  "name": "Mara",
+  "vorname": "Flückiger"
+ },
+ {
+  "id": 9,
+  "name": "Mirjam",
+  "vorname": "Zumsteg"
+ },
+ {
+  "id": 10,
+  "name": "Fernanda",
+  "vorname": "Hintz"
+ }
+]
