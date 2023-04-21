@@ -8,25 +8,25 @@ import (
 	"sort"
 )
 
-type Data interface {
-	GetUsers() []Users
-	GetUserById(id int) Users
-	CreateUser(Users) []Users
-	UpdateUser(id int, user Users) []Users
-	DeleteUser(id int) []Users
+type IData interface {
+	GetUsers() []SUsers
+	GetUserById(id int) SUsers
+	CreateUser(SUsers) []SUsers
+	UpdateUser(id int, user SUsers) []SUsers
+	DeleteUser(id int) []SUsers
 }
 
-type data struct {
-	userListe []Users
+type Sdata struct {
+	userListe []SUsers
 }
 
 var (
-	users    []Users
+	users    []SUsers
 	filePath = "public/users.json"
 	json     = jsoniter.ConfigCompatibleWithStandardLibrary
 )
 
-func InitData() (Data, error) {
+func InitData() (IData, error) {
 	file, err := os.ReadFile(filePath)
 
 	if err != nil {
@@ -37,26 +37,26 @@ func InitData() (Data, error) {
 		return nil, fiber.ErrNotImplemented
 	}
 
-	return &data{users}, nil
+	return &Sdata{users}, nil
 }
 
-func (d *data) GetUsers() []Users {
+func (d *Sdata) GetUsers() []SUsers {
 	return d.userListe
 }
 
-func (d *data) GetUserById(id int) Users {
+func (d *Sdata) GetUserById(id int) SUsers {
 	for _, user := range d.userListe {
 		if user.Id == id {
 			return user
 		}
 	}
-	return Users{}
+	return SUsers{}
 }
 
-func (d *data) CreateUser(user Users) []Users {
+func (d *Sdata) CreateUser(user SUsers) []SUsers {
 	var (
 		countID      = 1
-		controlsUser Users
+		controlsUser SUsers
 	)
 
 	for _, item := range d.userListe {
@@ -81,7 +81,7 @@ func (d *data) CreateUser(user Users) []Users {
 	return d.userListe
 }
 
-func (d *data) UpdateUser(id int, newUser Users) []Users {
+func (d *Sdata) UpdateUser(id int, newUser SUsers) []SUsers {
 	for i, user := range d.userListe {
 		if user.Id == id {
 			d.userListe[i] = newUser
@@ -96,7 +96,7 @@ func (d *data) UpdateUser(id int, newUser Users) []Users {
 	return d.userListe
 }
 
-func (d *data) DeleteUser(id int) []Users {
+func (d *Sdata) DeleteUser(id int) []SUsers {
 	for i, user := range d.userListe {
 		if user.Id == id {
 			d.userListe = append(d.userListe[:i], d.userListe[i+1:]...)

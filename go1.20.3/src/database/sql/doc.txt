@@ -28,7 +28,7 @@ Goals of the sql and sql/driver packages:
 * Be flexible with type conversions, but be paranoid about silent
   truncation or other loss of precision.
 
-* Handle concurrency well.  Users shouldn't need to care about the
+* Handle concurrency well.  SUsers shouldn't need to care about the
   database's per-connection thread safety issues (or lack thereof),
   and shouldn't have to maintain their own free pools of connections.
   The 'sql' package should deal with that bookkeeping as needed.  Given

@@ -91,7 +91,7 @@ GLOBL _rt0_386_lib_argv<>(SB),NOPTR, $4
 
 TEXT runtime·rt0_go(SB),NOSPLIT|NOFRAME|TOPFRAME,$0
 	// Copy arguments forward on an even stack.
-	// Users of this function jump to it, they don't call it.
+	// SUsers of this function jump to it, they don't call it.
 	MOVL	0(SP), AX
 	MOVL	4(SP), BX
 	SUBL	$128, SP		// plenty of scratch

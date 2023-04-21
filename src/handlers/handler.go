@@ -30,7 +30,7 @@ func CreateUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
 	data, _ := models.InitData()
-	var user models.Users
+	var user models.SUsers
 
 	if err := json.Unmarshal(c.Body(), &user); err != nil {
 		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
@@ -46,7 +46,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
 	id, _ := strconv.Atoi(c.Params("id"))
-	var user models.Users
+	var user models.SUsers
 	data, _ := models.InitData()
 
 	if err := json.Unmarshal(c.Body(), &user); err != nil {
