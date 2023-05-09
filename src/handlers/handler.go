@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/mBuergi86/GO-Microservices/src/models"
 	"github.com/mBuergi86/GO-Microservices/src/repository"
-	"strconv"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
@@ -21,7 +21,13 @@ func GetUsers(c *fiber.Ctx) error {
 func GetUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
-	id, _ := strconv.Atoi(c.Params("id"))
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 	data, _ := repository.NewRepositoryUsers()
 
 	return c.JSON(data.GetUserById(id))
@@ -46,7 +52,13 @@ func CreateUser(c *fiber.Ctx) error {
 func UpdateUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
-	id, _ := strconv.Atoi(c.Params("id"))
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 	var user models.SUsers
 	data, _ := repository.NewRepositoryUsers()
 
@@ -63,7 +75,13 @@ func UpdateUser(c *fiber.Ctx) error {
 func DeleteUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
-	id, _ := strconv.Atoi(c.Params("id"))
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 	data, _ := repository.NewRepositoryUsers()
 
 	return c.JSON(data.DeleteUser(id))
