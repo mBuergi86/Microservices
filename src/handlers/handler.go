@@ -10,11 +10,27 @@ import (
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
+func HelloWorld(c *fiber.Ctx) error {
+	if err := c.Status(fiber.StatusOK).SendString("Hello World"); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("500 Internal Server Error")
+	}
+	return nil
+}
+
+func ResultValue(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).SendString("value: " + c.Params("value"))
+}
+
 func GetUsers(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
-	data, _ := repository.NewRepositoryUsers()
-
+	data, err := repository.NewRepositoryUsers()
+	if err != nil {
+		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 	return c.JSON(data.GetUsers())
 }
 
@@ -28,7 +44,14 @@ func GetUser(c *fiber.Ctx) error {
 			"msg":   err.Error(),
 		})
 	}
-	data, _ := repository.NewRepositoryUsers()
+
+	data, err := repository.NewRepositoryUsers()
+	if err != nil {
+		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 
 	return c.JSON(data.GetUserById(id))
 }
@@ -36,7 +59,14 @@ func GetUser(c *fiber.Ctx) error {
 func CreateUser(c *fiber.Ctx) error {
 	c.Set("Content-Type", "application/json")
 
-	data, _ := repository.NewRepositoryUsers()
+	data, err := repository.NewRepositoryUsers()
+	if err != nil {
+		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
+
 	var user models.SUsers
 
 	if err := json.Unmarshal(c.Body(), &user); err != nil {
@@ -54,13 +84,19 @@ func UpdateUser(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
 			"msg":   err.Error(),
 		})
 	}
 	var user models.SUsers
-	data, _ := repository.NewRepositoryUsers()
+	data, err := repository.NewRepositoryUsers()
+	if err != nil {
+		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 
 	if err := json.Unmarshal(c.Body(), &user); err != nil {
 		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
@@ -77,12 +113,18 @@ func DeleteUser(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
 			"msg":   err.Error(),
 		})
 	}
-	data, _ := repository.NewRepositoryUsers()
+	data, err := repository.NewRepositoryUsers()
+	if err != nil {
+		return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
 
 	return c.JSON(data.DeleteUser(id))
 }

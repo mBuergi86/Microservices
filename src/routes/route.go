@@ -6,9 +6,11 @@ import (
 )
 
 func Routes(app *fiber.App) {
-	app.Get("/user", handlers.GetUsers)
-	app.Get("/user/:id", handlers.GetUser)
-	app.Post("/user", handlers.CreateUser)
-	app.Put("/user/:id", handlers.UpdateUser)
-	app.Delete("/user/:id", handlers.DeleteUser)
+	app.Get("/", handlers.HelloWorld)
+	app.Get("/:value", handlers.ResultValue)
+	app.Get("/users/user", handlers.GetUsers)
+	app.Get("/users/user/:id", handlers.GetUser)
+	app.Post("/users/user", handlers.CreateUser)
+	app.Put("/users/user/:id", handlers.UpdateUser)
+	app.Delete("/users/user/:id", handlers.DeleteUser)
 }
