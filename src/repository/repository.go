@@ -1,34 +1,34 @@
-package models
+package repository
 
 import (
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/mBuergi86/GO-Microservices/src/models"
 	"log"
 	"os"
 	"sort"
 )
 
-type IData interface {
-	GetUsers() []SUsers
-	GetUserById(id int) SUsers
-	CreateUser(SUsers) []SUsers
-	UpdateUser(id int, user SUsers) []SUsers
-	DeleteUser(id int) []SUsers
+type IRepositoryUsers interface {
+	GetUsers() []models.SUsers
+	GetUserById(id int) models.SUsers
+	CreateUser(models.SUsers) []models.SUsers
+	UpdateUser(id int, user models.SUsers) []models.SUsers
+	DeleteUser(id int) []models.SUsers
 }
 
-type Sdata struct {
-	userListe []SUsers
+type SUsers struct {
+	userListe []models.SUsers
 }
 
 var (
-	users    []SUsers
+	users    []models.SUsers
 	filePath = "public/users.json"
 	json     = jsoniter.ConfigCompatibleWithStandardLibrary
 )
 
-func InitData() (IData, error) {
+func NewRepositoryUsers() (IRepositoryUsers, error) {
 	file, err := os.ReadFile(filePath)
-
 	if err != nil {
 		return nil, fiber.ErrNotFound
 	}
@@ -37,26 +37,26 @@ func InitData() (IData, error) {
 		return nil, fiber.ErrNotImplemented
 	}
 
-	return &Sdata{users}, nil
+	return &SUsers{users}, nil
 }
 
-func (d *Sdata) GetUsers() []SUsers {
+func (d *SUsers) GetUsers() []models.SUsers {
 	return d.userListe
 }
 
-func (d *Sdata) GetUserById(id int) SUsers {
+func (d *SUsers) GetUserById(id int) models.SUsers {
 	for _, user := range d.userListe {
 		if user.Id == id {
 			return user
 		}
 	}
-	return SUsers{}
+	return models.SUsers{}
 }
 
-func (d *Sdata) CreateUser(user SUsers) []SUsers {
+func (d *SUsers) CreateUser(user models.SUsers) []models.SUsers {
 	var (
 		countID      = 1
-		controlsUser SUsers
+		controlsUser models.SUsers
 	)
 
 	for _, item := range d.userListe {
@@ -81,7 +81,7 @@ func (d *Sdata) CreateUser(user SUsers) []SUsers {
 	return d.userListe
 }
 
-func (d *Sdata) UpdateUser(id int, newUser SUsers) []SUsers {
+func (d *SUsers) UpdateUser(id int, newUser models.SUsers) []models.SUsers {
 	for i, user := range d.userListe {
 		if user.Id == id {
 			d.userListe[i] = newUser
@@ -96,7 +96,7 @@ func (d *Sdata) UpdateUser(id int, newUser SUsers) []SUsers {
 	return d.userListe
 }
 
-func (d *Sdata) DeleteUser(id int) []SUsers {
+func (d *SUsers) DeleteUser(id int) []models.SUsers {
 	for i, user := range d.userListe {
 		if user.Id == id {
 			d.userListe = append(d.userListe[:i], d.userListe[i+1:]...)

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/mBuergi86/GO-Microservices/src/routes"
 	"log"
 )
@@ -21,9 +22,9 @@ func ResultValue(c *fiber.Ctx) error {
 func main() {
 	app := fiber.New()
 	app.Use(logger.New())
+	app.Use(recover.New())
 	routes.Routes(app)
 
-	//Try only
 	app.Get("/", HelloWorld)
 	app.Get("/:value", ResultValue)
 	app.Static("/public", "./public/")
